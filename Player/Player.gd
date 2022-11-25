@@ -21,3 +21,6 @@ func _physics_process(delta): #delta is how long the last frame took
 		
  #if not pressing either
 	velocity = move_and_slide(velocity) #this will make it so that the character will move in real time and if the game lags this will compensate for that
+
+
+#kommentar
