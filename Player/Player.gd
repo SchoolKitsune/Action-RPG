@@ -7,6 +7,8 @@ const FRICTION = 500
 var velocity = Vector2.ZERO #velocity is how much change of current position
 #vector is the x and y position combined
 onready var animationPlayer = $AnimationPlayer #$ is used to get access to a node in the scene tree
+onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
 
 func _physics_process(delta): #delta is how long the last frame took
 	var input_vector = Vector2.ZERO #up is 0,-1. right is 1,0. down is 0,1 and left is -1,0
@@ -15,15 +17,13 @@ func _physics_process(delta): #delta is how long the last frame took
 	input_vector = input_vector.normalized() #normalized makes our character diagonal move speed the same as normal directions
 	
 	if input_vector != Vector2.ZERO:
-		if input_vector. x > 0:
-			animationPlayer.play("RunRight")
-		else:
-			animationPlayer.play("RunRight")
+		animationTree.set("parameters/Idle/blend_position", input_vector)
+		animationTree.set("parameters/Run/blend_position", input_vector)
+		animationState.travel("Run") #travel gets access to the animationState so that i can set the right animation
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta) #this makes it so that our velocity doesn't go faster than our MAX_SPEED
 	else:
-		animationPlayer.play("IdleRight")
+		animationState.travel("Idle")
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta) #Speed moves slowly towards a vector of 0,0
-		
  #if not pressing either
 	velocity = move_and_slide(velocity) #this will make it so that the character will move in real time and if the game lags this will compensate for that
 	
