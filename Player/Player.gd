@@ -10,6 +10,9 @@ onready var animationPlayer = $AnimationPlayer #$ is used to get access to a nod
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 
+func _ready():
+	animationTree.active = true #func _ready(): #_ready runs when this node (Player) is ready inside of this scene.
+
 func _physics_process(delta): #delta is how long the last frame took
 	var input_vector = Vector2.ZERO #up is 0,-1. right is 1,0. down is 0,1 and left is -1,0
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -26,5 +29,3 @@ func _physics_process(delta): #delta is how long the last frame took
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta) #Speed moves slowly towards a vector of 0,0
  #if not pressing either
 	velocity = move_and_slide(velocity) #this will make it so that the character will move in real time and if the game lags this will compensate for that
-	
-#func _ready(): #_ready runs when this node (Player) is ready inside of this scene.
