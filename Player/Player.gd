@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 const ACCELERATION = 500 #ACCELERATION is the change in velocity over time
-const MAX_SPEED = 80
+const MAX_SPEED = 100
 const FRICTION = 500
 
 var velocity = Vector2.ZERO #velocity is how much change of current position
