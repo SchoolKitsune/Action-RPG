@@ -54,7 +54,8 @@ func move_state(delta):
 		state = ATTACK
 	
 func attack_state(delta):
-	velocity = 0
+	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+	velocity = move_and_slide(velocity)
 	animationState.travel("Attack")
 	
 func attack_animation_finished(): #by using call method at the end of my attack animations i can run a function once the animation ends
