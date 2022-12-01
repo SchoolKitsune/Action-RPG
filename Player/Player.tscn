@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Pixel Character Sprite Sheet 3.png" type="Texture" id=2]
@@ -224,6 +224,126 @@ tracks/3/keys = {
 "values": [ false, true ]
 }
 
+[sub_resource type="Animation" id=37]
+resource_name = "DashDown"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 36, 37, 38, 39 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "dash_animation_finished"
+} ]
+}
+
+[sub_resource type="Animation" id=38]
+resource_name = "DashLeft"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 32, 33, 34, 35 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "dash_animation_finished"
+} ]
+}
+
+[sub_resource type="Animation" id=39]
+resource_name = "DashRight"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 24, 25, 26, 27 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "dash_animation_finished"
+} ]
+}
+
+[sub_resource type="Animation" id=40]
+resource_name = "DashUp"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 28, 29, 30, 31 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "dash_animation_finished"
+} ]
+}
+
 [sub_resource type="Animation" id=4]
 resource_name = "IdleDown"
 length = 0.1
@@ -424,6 +544,30 @@ min_space = Vector2( -1, -1.1 )
 max_space = Vector2( 1, 1.1 )
 blend_mode = 1
 
+[sub_resource type="AnimationNodeAnimation" id=41]
+animation = "DashLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=42]
+animation = "DashRight"
+
+[sub_resource type="AnimationNodeAnimation" id=43]
+animation = "DashDown"
+
+[sub_resource type="AnimationNodeAnimation" id=44]
+animation = "DashUp"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=45]
+blend_point_0/node = SubResource( 41 )
+blend_point_0/pos = Vector2( -1, 0 )
+blend_point_1/node = SubResource( 42 )
+blend_point_1/pos = Vector2( 1, 0 )
+blend_point_2/node = SubResource( 43 )
+blend_point_2/pos = Vector2( 0, 1.1 )
+blend_point_3/node = SubResource( 44 )
+blend_point_3/pos = Vector2( 0, -1 )
+min_space = Vector2( -1, -1.1 )
+max_space = Vector2( 1, 1.1 )
+
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "IdleRight"
 
@@ -482,16 +626,22 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=31]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=46]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=47]
+
 [sub_resource type="AnimationNodeStateMachine" id=21]
 states/Attack/node = SubResource( 29 )
 states/Attack/position = Vector2( -1.63321, 257.759 )
+states/Dash/node = SubResource( 45 )
+states/Dash/position = Vector2( -184.512, 143 )
 states/Idle/node = SubResource( 15 )
 states/Idle/position = Vector2( -1.63321, 143 )
 states/Run/node = SubResource( 20 )
 states/Run/position = Vector2( 169.367, 143 )
-transitions = [ "Idle", "Run", SubResource( 23 ), "Run", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 30 ), "Attack", "Idle", SubResource( 31 ) ]
+transitions = [ "Idle", "Run", SubResource( 23 ), "Run", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 30 ), "Attack", "Idle", SubResource( 31 ), "Dash", "Idle", SubResource( 46 ), "Idle", "Dash", SubResource( 47 ) ]
 start_node = "Idle"
-graph_offset = Vector2( -602.512, 96.7592 )
+graph_offset = Vector2( -686.512, 66.7592 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=22]
 
@@ -517,6 +667,10 @@ anims/AttackDown = SubResource( 25 )
 anims/AttackLeft = SubResource( 26 )
 anims/AttackRight = SubResource( 27 )
 anims/AttackUp = SubResource( 28 )
+anims/DashDown = SubResource( 37 )
+anims/DashLeft = SubResource( 38 )
+anims/DashRight = SubResource( 39 )
+anims/DashUp = SubResource( 40 )
 anims/IdleDown = SubResource( 4 )
 anims/IdleLeft = SubResource( 5 )
 anims/IdleRight = SubResource( 6 )
@@ -532,6 +686,7 @@ tree_root = SubResource( 21 )
 anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 22 )
 parameters/Attack/blend_position = Vector2( 0, 0 )
+parameters/Dash/blend_position = Vector2( 0, 0 )
 parameters/Idle/blend_position = Vector2( 0, 0 )
 parameters/Run/blend_position = Vector2( 0, 0 )
 
@@ -547,6 +702,5 @@ collision_mask = 8
 
 [node name="CollisionShape2D" parent="HitboxPivot/SwordHitbox" index="0"]
 shape = SubResource( 36 )
-disabled = true
 
 [editable path="HitboxPivot/SwordHitbox"]

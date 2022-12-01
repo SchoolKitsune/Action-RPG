@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 const ACCELERATION = 500 #ACCELERATION is the change in velocity over time
 const MAX_SPEED = 100
+const DASH_SPEED = 150
 const FRICTION = 500
 
 enum{
@@ -13,6 +14,7 @@ enum{
 
 var state = MOVE
 var velocity = Vector2.ZERO #velocity is how much change of current position
+var dash_vector = Vector2.DOWN
 #vector is the x and y position combined
 onready var animationPlayer = $AnimationPlayer #$ is used to get access to a node in the scene tree
 onready var animationTree = $AnimationTree
@@ -27,7 +29,7 @@ func _physics_process(delta): #delta is how long the last frame took
 			move_state(delta)
 	
 		DASH:
-			pass
+			dash_state(delta)
 			
 		ATTACK:
 			attack_state(delta)
@@ -39,24 +41,42 @@ func move_state(delta):
 	input_vector = input_vector.normalized() #normalized makes our character diagonal move speed the same as normal directions
 	
 	if input_vector != Vector2.ZERO:
+		dash_vector = input_vector
 		animationTree.set("parameters/Idle/blend_position", input_vector)
 		animationTree.set("parameters/Run/blend_position", input_vector)
 		animationTree.set("parameters/Attack/blend_position", input_vector)
+		animationTree.set("parameters/Dash/blend_position", input_vector)
 		animationState.travel("Run") #travel gets access to the animationState so that i can set the right animation
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta) #this makes it so that our velocity doesn't go faster than our MAX_SPEED
 	else:
 		animationState.travel("Idle")
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta) #Speed moves slowly towards a vector of 0,0
  #if not pressing either
-	velocity = move_and_slide(velocity) #this will make it so that the character will move in real time and if the game lags this will compensate for that
 	
+	move()
+	
+	if Input.is_action_just_pressed("dash"):
+		state = DASH
 	if Input.is_action_just_pressed("attack"):
 		state = ATTACK
-	
+
+func dash_state(delta):
+	velocity = dash_vector * DASH_SPEED
+	animationState.travel("Dash")
+	move()
+
 func attack_state(delta):
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 	velocity = move_and_slide(velocity)
 	animationState.travel("Attack")
+
+func move():
+	velocity = move_and_slide(velocity) #this will make it so that the character will move in real time and if the game lags this will compensate for that
 	
+
+func dash_animation_finished():
+	velocity = velocity / 2
+	state = MOVE
+
 func attack_animation_finished(): #by using call method at the end of my attack animations i can run a function once the animation ends
 	state = MOVE
