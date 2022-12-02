@@ -1,9 +1,9 @@
 extends KinematicBody2D
 
-const ACCELERATION = 500 #ACCELERATION is the change in velocity over time
-const MAX_SPEED = 100
-const DASH_SPEED = 150
-const FRICTION = 500
+export var ACCELERATION = 500 #ACCELERATION is the change in velocity over time
+export var MAX_SPEED = 100
+export var DASH_SPEED = 150
+export var FRICTION = 500
 
 enum{
 	MOVE, 
@@ -14,14 +14,19 @@ enum{
 
 var state = MOVE
 var velocity = Vector2.ZERO #velocity is how much change of current position
-var dash_vector = Vector2.DOWN
+var dash_vector = Vector2.LEFT
 #vector is the x and y position combined
 onready var animationPlayer = $AnimationPlayer #$ is used to get access to a node in the scene tree
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
+onready var swordHitbox = $HitboxPivot/SwordHitbox
+onready var dashHitbox = $DashHitboxPivot/DashHitbox
+
 
 func _ready():
 	animationTree.active = true #func _ready(): #_ready runs when this node (Player) is ready inside of this scene.
+	swordHitbox.knockback_vector = dash_vector
+	dashHitbox.knockback_vector = dash_vector
 
 func _physics_process(delta): #delta is how long the last frame took
 	match state:
@@ -42,6 +47,8 @@ func move_state(delta):
 	
 	if input_vector != Vector2.ZERO:
 		dash_vector = input_vector
+		swordHitbox.knockback_vector = input_vector #our knockback will now be the same as the direction i was just moving in
+		dashHitbox.knockback_vector = input_vector
 		animationTree.set("parameters/Idle/blend_position", input_vector)
 		animationTree.set("parameters/Run/blend_position", input_vector)
 		animationTree.set("parameters/Attack/blend_position", input_vector)
@@ -75,7 +82,7 @@ func move():
 	
 
 func dash_animation_finished():
-	velocity = velocity / 2
+	velocity = velocity * 0.8
 	state = MOVE
 
 func attack_animation_finished(): #by using call method at the end of my attack animations i can run a function once the animation ends
