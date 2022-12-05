@@ -14,7 +14,7 @@ enum{
 
 var state = MOVE
 var velocity = Vector2.ZERO #velocity is how much change of current position
-var dash_vector = Vector2.LEFT
+var dash_vector = Vector2.DOWN
 #vector is the x and y position combined
 onready var animationPlayer = $AnimationPlayer #$ is used to get access to a node in the scene tree
 onready var animationTree = $AnimationTree
