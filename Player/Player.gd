@@ -14,22 +14,24 @@ enum{
 
 var state = MOVE
 var velocity = Vector2.ZERO #velocity is how much change of current position
-var dash_vector = Vector2.LEFT
-#vector is the x and y position combined
+var dash_vector = Vector2.DOWN #vector is the x and y position combined
+var stats = PlayerStats
+
 onready var animationPlayer = $AnimationPlayer #$ is used to get access to a node in the scene tree
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var dashHitbox = $DashHitboxPivot/DashHitbox
-
+onready var hurtbox = $Hurtbox
 
 func _ready():
+	stats.connect("no_health", self, "queue_free")
 	animationTree.active = true #func _ready(): #_ready runs when this node (Player) is ready inside of this scene.
 	swordHitbox.knockback_vector = dash_vector
 	dashHitbox.knockback_vector = dash_vector
 
 func _physics_process(delta): #delta is how long the last frame took
-	match state:
+	match state: #match is kind like ifs and elifs
 		MOVE: #if our state equals move then run the move_state function and so on for other states
 			move_state(delta)
 	
@@ -87,3 +89,9 @@ func dash_animation_finished():
 
 func attack_animation_finished(): #by using call method at the end of my attack animations i can run a function once the animation ends
 	state = MOVE
+
+
+func _on_Hurtbox_area_entered(area):
+	stats.health -= 1
+	hurtbox.start_invincibility(0.5)
+	hurtbox.create_hit_effect(area)
