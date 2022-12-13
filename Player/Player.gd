@@ -31,7 +31,7 @@ func _ready():
 	dashHitbox.knockback_vector = dash_vector
 
 func _physics_process(delta): #delta is how long the last frame took
-	match state: #match is kind like ifs and elifs
+	match state:
 		MOVE: #if our state equals move then run the move_state function and so on for other states
 			move_state(delta)
 	
