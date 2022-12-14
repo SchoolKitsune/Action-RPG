@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Pixel Character Sprite Sheet 3.png" type="Texture" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://Shadows/SmallShadow.png" type="Texture" id=5]
 [ext_resource path="res://Player/DashHitbox.gd" type="Script" id=6]
 [ext_resource path="res://Hitboxes and Hurtboxes/Hurtbox.tscn" type="PackedScene" id=7]
-[ext_resource path="res://UI/HealthUI.tscn" type="PackedScene" id=8]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
@@ -822,24 +821,18 @@ height = 10.0
 collision_layer = 2
 script = ExtResource( 1 )
 
-[node name="ShadowSprite" type="Sprite" parent="."]
-texture = ExtResource( 5 )
-offset = Vector2( 0, 5 )
-
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -8 )
 texture = ExtResource( 2 )
 hframes = 40
 frame = 1
 
+[node name="ShadowSprite" type="Sprite" parent="."]
+texture = ExtResource( 5 )
+offset = Vector2( 0, 5 )
+
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-
-[node name="HealthUI" parent="Camera2D" instance=ExtResource( 8 )]
-margin_left = -148.0
-margin_top = -79.0
-margin_right = -72.0
-margin_bottom = -67.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
