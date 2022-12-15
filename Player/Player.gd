@@ -15,7 +15,7 @@ enum{
 var state = MOVE
 var velocity = Vector2.ZERO #velocity is how much change of current position
 var dash_vector = Vector2.DOWN #vector is the x and y position combined
-var stats = PlayerStats
+var stats = PlayerStats #this is a global so you can access it anywhere
 
 onready var animationPlayer = $AnimationPlayer #$ is used to get access to a node in the scene tree
 onready var animationTree = $AnimationTree
@@ -24,9 +24,10 @@ onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var dashHitbox = $DashHitboxPivot/DashHitbox
 onready var hurtbox = $Hurtbox
 
-func _ready():
-	stats.connect("no_health", self, "queue_free")
-	animationTree.active = true #func _ready(): #_ready runs when this node (Player) is ready inside of this scene.
+func _ready(): #func _ready(): #_ready runs when this node (Player) is ready inside of this scene.
+	randomize() #makes each time you run the game different than the last time
+	stats.connect("no_health", self, "queue_free") #if you have no health the character dies
+	animationTree.active = true #func _ready(): #the animation tree is only active when ready
 	swordHitbox.knockback_vector = dash_vector
 	dashHitbox.knockback_vector = dash_vector
 
@@ -81,8 +82,7 @@ func attack_state(delta):
 
 func move():
 	velocity = move_and_slide(velocity) #this will make it so that the character will move in real time and if the game lags this will compensate for that
-	
-
+#this also makes remember where we where
 func dash_animation_finished():
 	velocity = velocity * 0.8
 	state = MOVE
